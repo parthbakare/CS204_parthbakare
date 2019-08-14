@@ -7,7 +7,6 @@ int check (string b)
 
 	int k = 1;
 	int i = 0;
-	int count  = 0;
 
 	while(b[i] != '\0')
 	{
