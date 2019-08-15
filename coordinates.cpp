@@ -27,11 +27,29 @@ void AddFirst(int X, int Y)
     
 }
 
+string Search(int X, int Y)
+{
+    string k = "false";
+    struct point *temp = first;
+    
+    while(temp!=NULL)
+    {
+        if(temp->x == X && temp->y == Y)
+        {
+            k = "true";
+            return k;
+        }
+        temp = temp->node;
+    }
+    
+    return k;
+}
+
 void DelFirst()
 {
     if(first == NULL)
     {
-        cout << "empty";
+        cout << "-1\n";
     }
     
     else
@@ -44,61 +62,53 @@ void DelFirst()
 }
 
 void Del(int X, int Y)
-{   
-    if(first->x == X && first->y == Y)
-    {
-        DelFirst();
-    }
+{
+    if(Search(X, Y) == "false")
+        cout << "-1\n";
     
     else
     {
-    
-        point *temp1 = first;
-        point *temp2 = NULL;
-    
-        while((temp1->x != X || temp1->y != Y) && temp1->node != NULL)
+        if(first->x == X && first->y == Y)
         {
-            temp2 = temp1;
-            temp1 = temp1->node;
+            DelFirst();
         }
-    
-        temp2->node = temp1->node;
-        temp1->node = NULL;
-        delete temp1;
+        
+        else
+        {
+            
+            point *temp1 = first;
+            point *temp2 = NULL;
+            
+            while((temp1->x != X || temp1->y != Y) && temp1->node != NULL)
+            {
+                temp2 = temp1;
+                temp1 = temp1->node;
+            }
+            
+            temp2->node = temp1->node;
+            temp1->node = NULL;
+            delete temp1;
+        }
     }
 }
 
 void Search(float d)
 {
     point *temp = first;
+    int count = 0;
     
     while(temp!=NULL)
     {
         if(distance(temp->x, temp->y) <= d)
         {
-            cout << "(" << temp->x << ", " << temp->y << ") ";
+            count++;
         }
         temp = temp->node;
     }
+    
+    cout << count << endl;
 }
 
-string Search(int X, int Y)
-{
-    string k = "false";
-    struct point *temp = first;
-    
-    while(temp!=NULL)
-    {
-        if(temp->x == X && temp->y == Y)
-        { 
-            k = "true";
-            return k;
-        }
-        temp = temp->node;
-    }
-    
-    return k;
-}
 
 void Length()
 {
@@ -154,7 +164,7 @@ int main() {
         {
             int X, Y;
             cin >> X >> Y;
-            cout << Search(X, Y);
+            cout << Search(X, Y) << endl;
         }
         
         else
