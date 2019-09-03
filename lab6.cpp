@@ -1,75 +1,66 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-	
-	vector<long long int> A;
-	vector<long long int> B;	
-	long long int maxi;
+struct querry {
+    long long int num;
+    long long int id;
+    long long int value;
+};
 
-	long long int m;
-	cin >> m;
+int main()
+{
+    long long int n, m;
+    cin >> n >> m;
 
-	long long int n;
-	cin >> n;
+    struct querry q[m];
+    long long int userid[m];
+    long long int recharge[m];
 
-	int t;
-	for(int i=1; i<=n; i++)
-	{
-		cin >> t;
+    for(int i=0; i<m; i++)
+        recharge[i] = 0;
+  
+    for(int i=0; i<m; i++)
+    {
+        cin >> q[i].num;
+        if (q[i].num == 1)
+        {
+            cin >> q[i].id >> q[i].value;
+            userid[i] = q[i].id;
+        }
+    }
 
-		if(t==1)
-		{
-			long long int x, y;
-			cin >> x >> y;
+    long long int k = 0; 
+    long long int maximum;
+    sort(userid, userid + m);
+    
+    for(int i=0; i<m; i++)
+    {   
+        long long int temp;
 
-			if(A.empty())
-		  	{
-		  		A.push_back(x);
-		  		B.push_back(y);
-		  		maxi = 0;
-		  	}
-			
-			else 
-			{
-				int p = -1;
-  	
-	  			for(long long int i=0; i<A.size(); i++)
-	  			{
-	  				if(A[i]==x)
-	  				p = i;
-	  			}
+        if (q[i].num == 1)
+        {
+            temp = lower_bound(userid, userid + m, q[i].id) - userid;
+            recharge[temp] += q[i].value;
 
-	  			if(p == -1)
-			  	{	
-			  		A.push_back(x);
-			  		B.push_back(y);
-			  		if(y >= B[maxi])
-			  			maxi = B.size() - 1;
-			  	}
+            if (k == 0)
+            {
+                k = 1;
+                maximum = temp;
+            }
 
-			  	else
-			  	{
-			  		B[p]+=y;
-			  		if(B[p] >= B[maxi])
-			  			maxi = p;
-			  	}
-		  	}
-		}
+            else if (recharge[temp] > recharge[maximum])
+                maximum = temp;
+        }
 
-		else if(t==2)
-		{
-			if(A.empty())
-			{
-				cout << "No data available.\n";
-			}
+        else
+        {
+            if (k == 0)
+                cout << "No data available." << endl;
+        
+            else
+                cout << userid[maximum] << endl;
+        }
+    }
 
-			else
-			{
-				cout << A[maxi] << endl;
-			}
-		}	
-	}
-
-	return 0;
+    return 0;
 }
